@@ -43,7 +43,7 @@ class Trainer(tf.Module):
 
     def get_weights(self, identifier=None):
         if identifier is None:
-            identifier = self._name
+            identifier = self._raw_name
         weights = {
             f'{identifier}_model': self.model.get_weights(),
             f'{identifier}_opt': self.get_optimizer_weights(),
@@ -52,7 +52,7 @@ class Trainer(tf.Module):
 
     def set_weights(self, weights, identifier=None):
         if identifier is None:
-            identifier = self._name
+            identifier = self._raw_name
         self.model.set_weights(weights[f'{identifier}_model'])
         self.set_optimizer_weights(weights[f'{identifier}_opt'])
         

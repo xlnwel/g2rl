@@ -1,5 +1,13 @@
 ---
 # NOTE: root_dir and model_name will be specified to all configs in run.train.py
+algorithm: &algo ppo
+
+# model path: root_dir/model_name/name
+# tensorboard path: root_dir/model_name/logs
+# the following names are just examples; they will be reset in our training process
+root_dir: *algo
+model_name: *algo
+
 env:
     name: &env_name procgen_coinrun
     n_workers: 1
@@ -10,7 +18,7 @@ env:
     distribution_mode: easy
 
 agent:
-    algorithm: &algo ppo
+    algorithm: *algo
     precision: 16
 
     MAX_STEPS: 1e10
@@ -34,11 +42,6 @@ strategy:
         # null doesn't update values.
         value_update: null
 
-    # model path: root_dir/model_name/name
-    # tensorboard path: root_dir/model_name/logs
-    # the following names are just examples; they will be reset in our training process
-    root_dir: *algo
-    model_name: *algo
     RECORD_VIDEO: True
 
 model:
@@ -59,9 +62,6 @@ model:
         kernel_initializer: orthogonal
         activation: relu
 
-    root_dir: *algo
-    model_name: *algo
-
 loss:
     # arguments for loss
     value_loss: clip
@@ -76,9 +76,6 @@ trainer:
         lr: 5e-4
         clip_norm: .5
         epsilon: 1.e-5
-
-    root_dir: *algo
-    model_name: *algo
 
 actor:
     rms:
