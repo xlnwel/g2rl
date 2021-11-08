@@ -1,7 +1,6 @@
 from typing import Tuple, Dict
 import tensorflow as tf
 
-from env.typing import EnvOutput
 from utility.utils import config_attr
 from utility.tf_utils import numpy2tensor, tensor2numpy
 
@@ -30,7 +29,7 @@ class Actor:
         return getattr(self.model, name)
 
     def __call__(self, 
-                 env_output: EnvOutput,
+                 inp: dict,
                  evaluation: bool=False, 
                  return_eval_stats: bool=False):
         """ The interface to interact with the environment
@@ -42,7 +41,6 @@ class Actor:
         Return:
             (action, terms, rnn_state)
         """
-        inp = self._prepare_input_to_actor(env_output)
         inp, tf_inp = self._process_input(inp, evaluation)
         out = self.model.action(
             **tf_inp, 

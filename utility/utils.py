@@ -1,5 +1,6 @@
 import ast
 import collections
+import copy
 import inspect
 import itertools
 import math
@@ -13,22 +14,22 @@ from utility.typing import AttrDict
 
 
 def dict2AttrDict(config: dict):
-    attr_config = AttrDict(**config)
-    for k, v in attr_config.items():
+    attr_config = AttrDict()
+    for k, v in config.items():
         if isinstance(v, dict):
             attr_config[k] = dict2AttrDict(v)
         else:
-            attr_config[k] = v
+            attr_config[k] = copy.deepcopy(v)
 
     return attr_config
 
 def AttrDict2dict(attr_config: AttrDict):
-    config = attr_config.asdict()
-    for k, v in config.items():
+    config = {}
+    for k, v in attr_config.items():
         if isinstance(v, AttrDict):
             config[k] = AttrDict2dict(v)
         else:
-            config[k] = v
+            config[k] = copy.deepcopy(v)
 
     return config
 
